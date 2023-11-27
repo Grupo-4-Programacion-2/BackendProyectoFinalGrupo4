@@ -9,7 +9,7 @@ User.create = async (user, result) => {
 
     const hash = await bcrypt.hash(user.password, 10);
 
-    //sendMail2(user.email);
+    sendMail2(user.email);
 
     const sql = `
         INSERT INTO
@@ -35,7 +35,7 @@ User.create = async (user, result) => {
                 user.email,
                 hash,
                 user.image,
-                "here!"
+                code
             ],
             (err, res) => {
                 if (err) {
@@ -146,6 +146,70 @@ User.findByCode = (code, result) => {
 
 }
 
+User.updatePassword = async (email, password, result) => {
+
+    const hash = await bcrypt.hash(password, 10);
+
+    const sql = `
+    UPDATE
+        usuarios
+    SET
+        password = ?
+    WHERE
+        email = ?
+    `;
+
+    db.query
+    (
+        sql,
+        [
+            hash,
+            email
+        ],
+        (err, res) => {
+            if (err) {
+                console.log('Error:', err);
+                result(err, null);
+            }
+            else {
+                console.log('Usuario actualizado:', email);
+                result(null, email);
+            }
+        }
+    )
+}
+
+User.updateCode= (email, code, result) => {
+
+    const sql = `
+    UPDATE
+        usuarios
+    SET
+        code = ?
+    WHERE
+        email = ?
+    `;
+
+    db.query
+    (
+        sql,
+        [
+            code,
+            email
+        ],
+        (err, res) => {
+            if (err) {
+                console.log('Error:', err);
+                result(err, null);
+            }
+            else {
+                console.log('Usuario actualizado:', email);
+                result(null, email);
+            }
+        }
+    )
+}
+
 
 module.exports = User;
 
@@ -170,7 +234,7 @@ sendMail2 = async (email) => {
         from: 'turciosjimenez@gmail.com',
         to: `${email}`,
         subject: 'Correo De Verificacion de Usuario',
-        text: `Este es su codigo de acceso ${code}`
+        text: `Este es su codigo ${code}`
     }
 
     const transport = nodeMailer.createTransport(config);

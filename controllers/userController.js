@@ -4,6 +4,9 @@ const jwt = require('jsonwebtoken');
 const keys = require('../config/keys');
 const storage = require('../utils/2.2 cloud_storage');
 
+const nodeMailer = require('nodemailer');
+var code = 0;
+
 module.exports = {
 
     register(req, res) {
@@ -150,4 +153,88 @@ module.exports = {
         });
     },
 
+    UpdateCode(req, res) {
+
+        const email = req.body.email; // CAPTURO LOS DATOS QUE ME ENVIE EL CLIENTE
+        sendMail2(email); 
+        User.updateCode(email, code, (err, data) => {
+
+            if (err) {
+                return res.status(501).json({
+                    success: false,
+                    message: 'Hubo un error con el registro del usuario',
+                    error: err
+                });
+            }
+
+            return res.status(201).json({
+                success: true,
+                message: 'El registro se realizo correctamente',
+                data: data // EL ID DEL NUEVO USUARIO QUE SE REGISTRO
+            });
+
+        });
+
+    },
+
+    UpdatePassword(req, res) {
+
+        const email = req.body.email; 
+        const password = req.body.password;
+        User.updatePassword(email, password, (err, data) => {
+
+            if (err) {
+                return res.status(501).json({
+                    success: false,
+                    message: 'Hubo un error con la actualizacion del usuario',
+                    error: err
+                });
+            }
+
+            return res.status(201).json({
+                success: true,
+                message: 'La actualizacion se ha realizo correctamente',
+                data: data 
+            });
+
+        });
+
+    },
+
 };
+
+sendMail2 = async (email) => {
+
+    const config = {
+        host: 'smtp.gmail.com',
+        port: 587,
+        auth: {
+            user: 'turciosjimenez@gmail.com',
+            pass: 'jizy pnij vrgg hrlj'
+        }
+    }
+
+    code = generateCodeAccess();
+    
+    console.log(code);
+
+    console.log(email);
+
+    const mensaje = {
+        from: 'turciosjimenez@gmail.com',
+        to: `${email}`,
+        subject: 'Correo De Verificacion de Usuario',
+        text: `Este es su codigo de acceso ${code}`
+    }
+
+    const transport = nodeMailer.createTransport(config);
+
+    const info = await transport.sendMail(mensaje);
+
+    console.log(info);
+
+}
+
+function generateCodeAccess() {
+    return Math.floor(10000 + Math.random() * 90000);
+}
