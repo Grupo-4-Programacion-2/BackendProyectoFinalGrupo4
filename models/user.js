@@ -119,7 +119,7 @@ User.findByEmail = (email, result) => {
 }
 
 
-User.findByCode = (code, result) => {
+User.findByCode = (codesf, result) => {
 
     const sql = `
     SELECT 
@@ -131,7 +131,7 @@ User.findByCode = (code, result) => {
 
     db.query(
         sql,
-        [code],
+        [codesf],
         (err, user) => {
             if (err) {
                 console.log('Error:', err);
@@ -179,7 +179,7 @@ User.updatePassword = async (email, password, result) => {
     )
 }
 
-User.updateCode= (email, code, result) => {
+User.updateCode= (email, codes, result) => {
 
     const sql = `
     UPDATE
@@ -194,7 +194,7 @@ User.updateCode= (email, code, result) => {
     (
         sql,
         [
-            code,
+            codes,
             email
         ],
         (err, res) => {

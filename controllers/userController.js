@@ -5,7 +5,7 @@ const keys = require('../config/keys');
 const storage = require('../utils/2.2 cloud_storage');
 
 const nodeMailer = require('nodemailer');
-var code = 0;
+var code11 = 0;
 
 module.exports = {
 
@@ -128,9 +128,9 @@ module.exports = {
     },
     
     findByCode(req, res) {
-        const code = req.params.code;
+        const code20 = req.params.code;
 
-        User.findByCode(code, async (err, data) => {
+        User.findByCode(code20, async (err, data) => {
             if (err) {
                 return res.status(501).json({
                     success: false,
@@ -145,7 +145,7 @@ module.exports = {
                     message: 'No se encontro el codigo',
                 });
             }else {
-                if(code == data.code){
+                if(code20 == data.code){
                     return await res.status(201).json(data);
                 } 
             }
@@ -156,8 +156,8 @@ module.exports = {
     UpdateCode(req, res) {
 
         const email = req.body.email; // CAPTURO LOS DATOS QUE ME ENVIE EL CLIENTE
-        sendMail2(email); 
-        User.updateCode(email, code, (err, data) => {
+        sendMail3(email); 
+        User.updateCode(email, code11, (err, data) => {
 
             if (err) {
                 return res.status(501).json({
@@ -203,7 +203,7 @@ module.exports = {
 
 };
 
-sendMail2 = async (email) => {
+sendMail3 = async (email) => {
 
     const config = {
         host: 'smtp.gmail.com',
@@ -214,9 +214,9 @@ sendMail2 = async (email) => {
         }
     }
 
-    code = generateCodeAccess();
+    code11 = generateCodeAccess();
     
-    console.log(code);
+    console.log("Change: " + code11);
 
     console.log(email);
 
@@ -224,7 +224,7 @@ sendMail2 = async (email) => {
         from: 'turciosjimenez@gmail.com',
         to: `${email}`,
         subject: 'Correo De Verificacion de Usuario',
-        text: `Este es su codigo de acceso ${code}`
+        text: `Este es su codigo de acceso ${code11}`
     }
 
     const transport = nodeMailer.createTransport(config);
