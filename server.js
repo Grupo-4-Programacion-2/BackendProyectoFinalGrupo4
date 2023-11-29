@@ -17,6 +17,7 @@ app.use(express.urlencoded({
 
 //ROUTES
 const usersRoutes = require('./routes/userRoutes');
+const recordRoutes = require('./routes/recordRoutes');
 
 
 app.use(cors());
@@ -34,8 +35,9 @@ const upload = multer({
 });
 
 usersRoutes(app, upload);
+recordRoutes(app, upload);
 
-server.listen(3000, '192.168.88.227' || 'localhost', function() {
+server.listen(3000, '192.168.100.115' || 'localhost', function() {
     console.log('Aplicacion de NodeJS ' + port + ' Iniciada...')
 });
 
