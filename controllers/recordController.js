@@ -24,5 +24,19 @@ module.exports = {
                 data: data
             });
         })
+    },
+
+    getAll(req, res){
+        Recordatorio.getAll((err, data)=>{
+            if(err){
+                return res.status(501).json({
+                    success:false,
+                    message:'Hubo un error al listar los recordatorios',
+                    err:err
+                })
+            }
+
+            return res.status(201).json(data);
+        });
     }
 }

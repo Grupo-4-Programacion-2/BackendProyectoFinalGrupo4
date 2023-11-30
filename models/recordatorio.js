@@ -41,5 +41,19 @@ Recordatorio.create = async (recordatorio, result)=>{
     })
 }
 
+Recordatorio.getAll = async (result)=>{
+    const sql = `SELECT CONVERT(id, char) AS id, fechaCita, horaCita, CONVERT(userId, char) AS userId, notaTexto, notaVoz, notaFoto, latitud, longitud FROM recordatorios ORDER BY fechaCita desc`;
+
+    db.query(sql, (err, data)=>{
+        if(err){
+            console.log('Error: ',err);
+            result(err, null);
+        }else{
+            console.log('Recordatorios: ', data);
+            result(null, data);
+        }
+    });
+}
+
 
 module.exports = Recordatorio;
