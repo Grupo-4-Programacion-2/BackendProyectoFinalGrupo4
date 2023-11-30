@@ -8,7 +8,9 @@ Recordatorio.create = async (recordatorio, result)=>{
 
     const sql = `
     INSERT INTO recordatorios
-    (fechaCreacion, 
+    (
+        fechaCita,
+        horaCita, 
         userId, 
         notaTexto, 
         notaVoz, 
@@ -16,11 +18,12 @@ Recordatorio.create = async (recordatorio, result)=>{
         latitud, 
         longitud)
         
-        VALUES(?,?,?,?,?,?,?)`;
+        VALUES(?,?,?,?,?,?,?,?)`;
 
 
     db.query(sql, [
-        new Date(),
+        recordatorio.fechaCita,
+        recordatorio.horaCita,
         recordatorio.userId,
         recordatorio.notaTexto,
         recordatorio.notaVoz,
