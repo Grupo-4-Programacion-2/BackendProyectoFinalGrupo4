@@ -27,7 +27,7 @@ Recordatorio.create = async (recordatorio, result)=>{
         recordatorio.userId,
         recordatorio.notaTexto,
         recordatorio.notaVoz,
-        recordatorio.notaFoto,
+        recordatorio.image,
         recordatorio.latitud,
         recordatorio.longitud
     ], (err, res)=>{
