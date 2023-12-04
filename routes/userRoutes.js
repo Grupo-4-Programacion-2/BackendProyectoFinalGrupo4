@@ -12,6 +12,9 @@ module.exports = (app, upload) => {
     app.post('/api/users/login', usersController.login);
     app.post('/api/users/createWithImage', upload.array('image', 1), usersController.registerWithImage);
     
+    app.put('/api/users/update', passport.authenticate('jwt', { session: false }), upload.array('image', 1), usersController.updateWithImage);
+    app.put('/api/users/updateWithoutImage', passport.authenticate('jwt', { session: false }), usersController.updateWithoutImage);
+
     app.get('/api/users/findByCode/:code', passport.authenticate('jwt', { session: false }), usersController.findByCode);
     app.post('/api/users/sendcode', usersController.UpdateCode);
     app.post('/api/users/updatepassword', usersController.UpdatePassword);

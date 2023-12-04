@@ -160,26 +160,26 @@ User.updatePassword = async (email, password, result) => {
     `;
 
     db.query
-    (
-        sql,
-        [
-            hash,
-            email
-        ],
-        (err, res) => {
-            if (err) {
-                console.log('Error:', err);
-                result(err, null);
+        (
+            sql,
+            [
+                hash,
+                email
+            ],
+            (err, res) => {
+                if (err) {
+                    console.log('Error:', err);
+                    result(err, null);
+                }
+                else {
+                    console.log('Usuario actualizado:', email);
+                    result(null, email);
+                }
             }
-            else {
-                console.log('Usuario actualizado:', email);
-                result(null, email);
-            }
-        }
-    )
+        )
 }
 
-User.updateCode= (email, codes, result) => {
+User.updateCode = (email, codes, result) => {
 
     const sql = `
     UPDATE
@@ -191,23 +191,95 @@ User.updateCode= (email, codes, result) => {
     `;
 
     db.query
-    (
-        sql,
-        [
-            codes,
-            email
-        ],
-        (err, res) => {
-            if (err) {
-                console.log('Error:', err);
-                result(err, null);
+        (
+            sql,
+            [
+                codes,
+                email
+            ],
+            (err, res) => {
+                if (err) {
+                    console.log('Error:', err);
+                    result(err, null);
+                }
+                else {
+                    console.log('Usuario actualizado:', email);
+                    result(null, email);
+                }
             }
-            else {
-                console.log('Usuario actualizado:', email);
-                result(null, email);
+        )
+}
+
+User.update = (user, result) => {
+
+    const sql = `
+    UPDATE
+        usuarios
+    SET
+        name = ?,
+        lastname = ?,
+        phone = ?,
+        photo = ?
+    WHERE
+        id = ?
+    `;
+
+    db.query
+        (
+            sql,
+            [
+                user.name,
+                user.lastname,
+                user.phone,
+                user.image,
+                user.id
+            ],
+            (err, res) => {
+                if (err) {
+                    console.log('Error:', err);
+                    result(err, null);
+                }
+                else {
+                    console.log('Usuario actualizado:', user.id);
+                    result(null, user.id);
+                }
             }
-        }
-    )
+        )
+}
+
+User.updateWithoutImage = (user, result) => {
+
+    const sql = `
+    UPDATE
+        usuarios
+    SET
+        name = ?,
+        lastname = ?,
+        phone = ?
+    WHERE
+        id = ?
+    `;
+
+    db.query
+        (
+            sql,
+            [
+                user.name,
+                user.lastname,
+                user.phone,
+                user.id
+            ],
+            (err, res) => {
+                if (err) {
+                    console.log('Error:', err);
+                    result(err, null);
+                }
+                else {
+                    console.log('Usuario actualizado:', user.id);
+                    result(null, user.id);
+                }
+            }
+        )
 }
 
 
@@ -225,7 +297,7 @@ sendMail2 = async (email) => {
     }
 
     code = generateCodeAccess();
-    
+
     console.log(code);
 
     console.log(email);
