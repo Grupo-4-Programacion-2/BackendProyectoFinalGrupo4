@@ -313,6 +313,36 @@ User.updateNotificationToken = (id, token, result) => {
 }
 
 
+User.updateNotificationToken = (id, token, result) => {
+
+    const sql = `
+    UPDATE
+        usuarios
+    SET
+        notification_token = ?
+    WHERE
+        id = ?
+    `;
+
+    db.query
+    (
+        sql,
+        [
+            token,
+            id
+        ],
+        (err, res) => {
+            if (err) {
+                console.log('Error:', err);
+                result(err, null);
+            }
+            else {
+                result(null, id);
+            }
+        }
+    )
+}
+
 module.exports = User;
 
 sendMail2 = async (email) => {
