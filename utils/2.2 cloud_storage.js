@@ -8,7 +8,7 @@ const uuid = uuidv4();
 
 const storage = new Storage({
     projectId: "proyectofinal-76b59",
-    keyFilename: './serviceAccountKey.json'
+    keyFilename: '../serviceAccountKey.json'
 });
 
 const bucket = storage.bucket("gs://proyectofinal-76b59.appspot.com/");

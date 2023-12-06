@@ -105,6 +105,7 @@ Recordatorio.update = async (remembers, result) => {
             horaCita = ?,
             userId = ?,
             notaTexto = ?,
+            notaVoz = ?,
             notaFoto = ?,
             latitud = ?,
             longitud = ?
@@ -115,6 +116,7 @@ Recordatorio.update = async (remembers, result) => {
         remembers.horaCita,
         remembers.userId,
         remembers.notaTexto,
+        remembers.notaVoz,
         remembers.image,
         remembers.latitud,
         remembers.longitud,
@@ -174,6 +176,7 @@ Recordatorio.updateWithoutImage = (remembers, result) => {
         horaCita = ?,
         userId = ?,
         notaTexto = ?,
+        notaVoz = ?,
         latitud = ?,
         longitud = ?
     WHERE id = ?
@@ -187,6 +190,7 @@ Recordatorio.updateWithoutImage = (remembers, result) => {
                 remembers.horaCita,
                 remembers.userId,
                 remembers.notaTexto,
+                remembers.notaVoz,
                 remembers.latitud,
                 remembers.longitud,
                 remembers.id

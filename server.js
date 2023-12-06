@@ -7,6 +7,9 @@ const cors = require('cors');
 const multer = require('multer');
 const passport = require('passport');
 
+
+
+
 const port = process.env.PORT || 3000;
 
 app.use(logger('dev'));
@@ -25,6 +28,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 require('./config/passport')(passport);
+require('./controllers/jobNotificationsController');
 
 app.disable('x-powered-by');
 
@@ -37,7 +41,7 @@ const upload = multer({
 usersRoutes(app, upload);
 recordRoutes(app, upload);
 
-server.listen(3000, '192.168.88.227' || 'localhost', function() {
+server.listen(3000, '192.168.101.8' || 'localhost', function() {
     console.log('Aplicacion de NodeJS ' + port + ' Iniciada...')
 });
 

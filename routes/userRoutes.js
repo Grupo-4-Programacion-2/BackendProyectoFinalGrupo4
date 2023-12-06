@@ -18,5 +18,5 @@ module.exports = (app, upload) => {
     app.get('/api/users/findByCode/:code', passport.authenticate('jwt', { session: false }), usersController.findByCode);
     app.post('/api/users/sendcode', usersController.UpdateCode);
     app.post('/api/users/updatepassword', usersController.UpdatePassword);
-
+    app.put('/api/users/updateNotificationToken', passport.authenticate('jwt', { session: false }), usersController.updateNotificationToken);
 }   
