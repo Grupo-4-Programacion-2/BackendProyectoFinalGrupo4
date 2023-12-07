@@ -6,8 +6,22 @@ const { convertirFormato24a12 } = require('../utils/convertHora');
 
 
 
+function update(id){
+    const sql=`update recordatorios set estado='COMPLETADOS' where id=?`;
+    db.query(sql,[id],
+        (err, res) => {
+        if (err) {
+            console.log('Error:', err);   
+        }
+        else {
+            console.log("Número de filas actualizadas: ", res.affectedRows);
+        }
+    })
+}
+
 
 let users=null;
+let usersMas1=null;
 async function MiFuncion (){
     const today = new Date();
 
@@ -25,13 +39,21 @@ async function MiFuncion (){
     const horas = ahora.getHours().toString().padStart(2, '0'); // Asegura que siempre tenga dos dígitos
     const minutos = ahora.getMinutes().toString().padStart(2, '0');
     
-    
-
     const horaActual = `${horas}:${minutos}`;
 
     const horaFinal = convertirFormato24a12(horaActual);
+
+    const ahoraMas1 = new Date();
+    ahoraMas1.setMinutes(ahoraMas1.getMinutes()+1);
+    const horasMas1 = ahoraMas1.getHours().toString().padStart(2, '0'); // Asegura que siempre tenga dos dígitos
+    const minutosMas1 = ahoraMas1.getMinutes().toString().padStart(2, '0');
     
-    console.log("Fecha: ",formattedDate,", Hora: ",horaFinal);
+    const horaActualMas1 = `${horasMas1}:${minutosMas1}`;
+
+    const horaFinalMas1 = convertirFormato24a12(horaActualMas1);
+    
+    console.log("Fecha: ",formattedDate,", Hora(+1 min): ",horaFinalMas1);
+    console.log("Fecha: ",formattedDate,", Hora(+5 min): ",horaFinal);
 
 
     
@@ -62,23 +84,57 @@ async function MiFuncion (){
                 console.log('Usuario obtenido:', user);
                 users = user;
             }
-        }
-    )
+        });
+    
+    const sql1 = `
+        SELECT
+            CONVERT(r.id, char) AS id,
+            u.notification_token
+            
+        FROM   
+            recordatorios r inner join usuarios u on r.userId=u.id
+        WHERE
+            fechaCita = ? and horaCita=?`;
+
+    db.query(
+        sql1,
+        [formattedDate, horaFinalMas1],
+        (err, user) => {
+            if (err) {
+                console.log('Error:', err);
+                
+            }
+            else {  
+                console.log('Usuario obtenido:', user);
+                usersMas1 = user;
+            }
+        })
+
+        
     
 
 }
 
 
 cron.schedule('* * * * *', async () => {
-  console.log('running a task every minute');
+  //console.log('running a task every minute');
   await MiFuncion();
 
   if(users != null){
     users.forEach(element => {
         const userToken=element.notification_token;
         sendNotification(userToken,{title: "Recordatorio", body:"Tu cita comenzara en 5 minutos", id_notification:"1"})
-        console.log(userToken);
+        //console.log(userToken);
       });
-}
+    }
+
+    if(usersMas1 != null){
+        usersMas1.forEach(element => {
+            const userToken=element.notification_token;
+            sendNotification(userToken,{title: "Apresurate", body:"Tu cita comienza ya!", id_notification:"1"})
+            //console.log(userToken);
+            update(element.id);
+          });
+    }
   
 });
