@@ -14,10 +14,11 @@ Recordatorio.create = async (recordatorio, result) => {
         notaVoz, 
         notaFoto, 
         latitud, 
-        longitud
+        longitud,
+        status
         )
         
-        VALUES(?,?,?,?,?,?,?,?)`;
+        VALUES(?,?,?,?,?,?,?,?,?)`;
 
 
     db.query(sql, [
@@ -28,7 +29,8 @@ Recordatorio.create = async (recordatorio, result) => {
         recordatorio.notaVoz,
         recordatorio.image,
         recordatorio.latitud,
-        recordatorio.longitud
+        recordatorio.longitud,
+        'PENDIENTES'
     ], (err, res) => {
         if (err) {
             console.log("Error: ", err.message);
@@ -69,7 +71,7 @@ Recordatorio.create = async (recordatorio, result) => {
 //     });
 // }
 
-Recordatorio.getAll = async (userId, result) => {
+Recordatorio.getAll = async (userId, status, result) => {
     const sql = `
     SELECT CONVERT(id, char) AS id,
         fechaCita,
@@ -81,11 +83,11 @@ Recordatorio.getAll = async (userId, result) => {
         latitud,
         longitud
     FROM recordatorios
-    WHERE userId = ?
+    WHERE userId = ? AND status = ?
     ORDER BY fechaCita DESC;
     `;
 
-    db.query(sql,[userId],
+    db.query(sql,[userId, status],
         (err, data) => {
             if (err) {
                 console.log('Error: ', err);
@@ -208,6 +210,37 @@ Recordatorio.updateWithoutImage = (remembers, result) => {
         )
 }
 
+
+Recordatorio.updateStatus = (id, result) => {
+
+    const sql = `
+    UPDATE
+        recordatorios
+    SET
+        status = ?
+    WHERE
+        id = ?
+    `;
+
+    db.query
+        (
+            sql,
+            [
+                'COMPLETADOS',
+                id
+            ],
+            (err, res) => {
+                if (err) {
+                    console.log('Error:', err);
+                    result(err, null);
+                }
+                else {
+                    console.log('Usuario actualizado:', id);
+                    result(null, newStatus);
+                }
+            }
+        )
+}
 
 
 Recordatorio.deleteTask = (id, result) => {

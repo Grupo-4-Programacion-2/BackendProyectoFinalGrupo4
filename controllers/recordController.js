@@ -64,8 +64,10 @@ module.exports = {
       
       getAllData(req, res){
         const userId = req.params.userId;
+        const status = req.params.status;
 
-        Recordatorio.getAll(userId, (err, data)=>{
+
+        Recordatorio.getAll(userId, status, (err, data)=>{
             if(err){
                 return res.status(501).json({
                     success: false,
@@ -136,6 +138,29 @@ module.exports = {
         });
 
     },
+
+    // UpdateStatus(req, res) {
+
+    //     //const status = req.body.status; // CAPTURO LOS DATOS QUE ME ENVIE EL CLIENTE
+    //     Recordatorio.updateStatus(status, (err, data) => {
+
+    //         if (err) {
+    //             return res.status(501).json({
+    //                 success: false,
+    //                 message: 'Hubo un error con el registro del usuario',
+    //                 error: err
+    //             });
+    //         }
+
+    //         return res.status(201).json({
+    //             success: true,
+    //             message: 'El registro se realizo correctamente',
+    //             data: data // EL ID DEL NUEVO USUARIO QUE SE REGISTRO
+    //         });
+
+    //     });
+
+    // },
 
 
 }

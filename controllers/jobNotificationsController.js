@@ -3,6 +3,8 @@ const db = require('../config/config');
 const User = require('../models/user');
 const { sendNotification } = require('./pushNotificationsController');
 const { convertirFormato24a12 } = require('../utils/convertHora');
+const controller = require('../controllers/recordController');
+const Recordatorio = require('../models/recordatorio');
 
 
 
