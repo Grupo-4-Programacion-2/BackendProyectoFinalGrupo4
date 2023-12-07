@@ -211,11 +211,11 @@ Recordatorio.updateWithoutImage = (remembers, result) => {
 }
 
 
-Recordatorio.updateStatus = (id, newStatus, result) => {
+Recordatorio.updateStatus = (id, result) => {
 
     const sql = `
     UPDATE
-        usuarios
+        recordatorios
     SET
         status = ?
     WHERE
@@ -226,8 +226,8 @@ Recordatorio.updateStatus = (id, newStatus, result) => {
         (
             sql,
             [
-                id,
-                newStatus
+                'COMPLETADOS',
+                id
             ],
             (err, res) => {
                 if (err) {
