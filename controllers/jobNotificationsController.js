@@ -9,7 +9,7 @@ const Recordatorio = require('../models/recordatorio');
 
 
 function update(id){
-    const sql=`update recordatorios set estado='COMPLETADOS' where id=?`;
+    const sql=`update recordatorios set status='COMPLETADOS' where id=?`;
     db.query(sql,[id],
         (err, res) => {
         if (err) {
